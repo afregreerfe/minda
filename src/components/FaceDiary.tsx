@@ -14,21 +14,36 @@ import { useCamera, useHaptics, usePermissions } from '../hooks/useCapacitor';
         if (!hasPermission) {
           const granted = await requestCameraPermission();
           if (!granted) {
-            setPermissionError('Camera permission is required to use Face Diary feature. Please enable camera access in your device settings.');
+            console.error('Camera permission denied');
             return;
           }
         }
       }
       
-      setPermissionError(null);
-      
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user' },
         audio: false
       });
-        streamRef.current = stream;
-      }
-    } catch (error) {
-      setPermissionError('Unable to access camera. Please check your permissions and try again.');
-    }
-  };
+
+      <div className="max-w-md mx-auto p-4 space-y-6">
+        {/* Permission Error */}
+        {permissionError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+            <div className="flex items-start space-x-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <h3 className="font-semibold text-red-800 mb-2">Camera Permission Required</h3>
+                <p className="text-sm text-red-700 mb-3">{permissionError}</p>
+                <button
+                  onClick={startCamera}
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Video Recording Interface */}
+        <div className="bg-white rounded-xl shadow-md p-6">
