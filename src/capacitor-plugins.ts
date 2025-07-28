@@ -6,6 +6,7 @@ export type {
   CameraSource,
   Photo,
   CameraPermissionType,
+  CameraPermissionType,
   DeviceInfo,
   Directory,
   Encoding,
